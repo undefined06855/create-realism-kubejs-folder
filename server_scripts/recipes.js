@@ -9,6 +9,11 @@ ServerEvents.recipes(event => {
     // create:andesite_alloy
     event.remove({ output: "create:andesite_alloy" })
     event.recipes.createMixing("create:andesite_alloy", [
-        "create:creative_motor"
+        "minecraft:andesite",
+        "#forge:nuggets/iron"
     ])
+    event.recipes.createMixing("create:andesite_alloy", [
+        "minecraft:andesite",
+        "#forge:ingots/iron"
+    ]).heated()
 })
