@@ -16,4 +16,6 @@ ServerEvents.recipes(event => {
         "minecraft:andesite",
         "#forge:ingots/iron"
     ]).heated()
+
+    
 })
