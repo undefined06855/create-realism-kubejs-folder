@@ -1,0 +1,13 @@
+{
+    "item.pocket_money.silver_coin": "Iron Plated Coin",
+    "item.pocket_money.gold_coin": "Gold Plated Coin",
+
+    "item.weavers_pocket_money.gold_coin": "Gold Plated Coin",
+    "item.weavers_pocket_money.silver_coin": "Iron Plated Coin",
+
+    "item.pocket_money.snow_token": "Snow Token [UNOBTAINABLE]",
+    "item.pocket_money.platinum_token": "Platinum Token [UNOBTAINABLE]",
+
+    "item.weavers_pocket_money.snow_token": "Snow Token [UNOBTAINABLE]",
+    "item.weavers_pocket_money.platinum_token": "Platinum Token [UNOBTAINABLE]"
+}
