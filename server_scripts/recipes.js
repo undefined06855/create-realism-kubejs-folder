@@ -133,4 +133,4 @@ ServerEvents.recipes(event => {
 
     // create:mechanical_arm
     event.replaceInput({ output: "create:mechanical_arm" }, "create:brass_casing", "create:brass_encased_cogwheel")
-    })
+})
