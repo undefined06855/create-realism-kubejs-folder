@@ -8,23 +8,23 @@ Ponder.registry(event => {
         scene.idle(10)
 
         scene
-            .text(50, "This is a rubber tree, find it in swamps and mangrove swamps.", [2.0, 2.5, 2.5])
+            .text(70, "This is a rubber tree, find it in swamps and mangrove swamps.", [1, 7, 1])
             .colored(PonderPalette.WHITE)
             .placeNearTarget()
 
-        scene.idle(50)
+        scene.idle(80)
 
         scene
-            .text(300, "Chop the logs down to have a 70%% chance of getting resin.", [2.0, 2.5, 2.5])
+            .text(300, "Chop the logs down to get 0 - 2 pieces of resin (50%% chance each).", [1, 7, 1])
             .colored(PonderPalette.WHITE)
             .placeNearTarget()
 
         scene
-            .showControls(300, [2.5, 3, 2.5], "left")
+            .showControls(300, [1, 5.5, 1], "left")
             .withItem("iron_axe")
 
         scene.idle(20)        
     })
 })
 
-console.info("Ponder stuff added")
+console.info("Ponder stuff added [CLIENT]")
