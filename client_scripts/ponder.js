@@ -25,6 +25,15 @@ Ponder.registry(event => {
 
         scene.idle(20)        
     })
+
+    // easter eggg (dirt ponder)
+    event
+    .create("minecraft:dirt")
+    .scene("easter_egg", "Something...", "kubejs:blank_baseplate", (scene, util) => {
+        scene.showStructure()
+        scene.idle(10)
+        const blobbyFish = scene.world.createEntity("alexsmobs:blobfish", [11 / 2, 1, 11 / 2]);
+    })
 })
 
 console.info("Ponder stuff added [CLIENT]")

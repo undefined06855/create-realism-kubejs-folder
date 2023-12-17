@@ -1,17 +1,6 @@
 // priority: 10
 // To be honest I have no idea what priority is but oh well
 
-function generate_encased(event, item, type)
-{
-    event.recipes.minecraft.crafting_shaped(`create:${type}_encased_${item}`,
-        ["A", "B", "A"],
-        {
-            "A": `create:${item}`,
-            "B": `create:${type}_casing`
-        }
-    )
-}
-
 ServerEvents.recipes(event => {
 
     // create:shaft
@@ -20,14 +9,15 @@ ServerEvents.recipes(event => {
 
     // create:andesite_alloy
     event.remove({ output: "create:andesite_alloy" })
-    event.recipes.create.mixing("2x create:andesite_alloy", [
+    event.recipes.create.mixing("2x create:andesite_alloy", [ // efficient for mid-game
         "2x minecraft:andesite",
         "2x #forge:nuggets/iron"
     ]).heated()
-    event.recipes.create.mixing("4x create:andesite_alloy", [
+    event.recipes.create.mixing("5x create:andesite_alloy", [ // very efficient for end-game
         "2x minecraft:andesite",
         "2x #forge:nuggets/iron"
     ]).superheated()
+    // normal crafting for early-game (no auto-crafting, since id ends in "_manual_only")
     event.recipes.minecraft.crafting_shapeless("create:andesite_alloy", ["2x #forge:nuggets/iron", "2x minecraft:andesite"]).id("kubejs:andesite_alloy_manual_only")
     
     // create:brass_ingot
@@ -62,8 +52,30 @@ ServerEvents.recipes(event => {
             "C": "create:whisk"
         }
     )
+    
+    // create:mechanical_piston
+    event.remove({ output: "create:mechanical_piston" })
+    event.recipes.minecraft.crafting_shaped("create:mechanical_piston",
+        ["A", "B", "C"],
+        {
+            "A": "minecraft:piston",
+            "B": "create:piston_extension_pole",
+            "C": "create:andesite_encased_shaft"
+        }
+    )
 
     // encased stuff:
+    function generate_encased(event, item, type)
+    {
+        event.recipes.minecraft.crafting_shaped(`create:${type}_encased_${item}`,
+            ["A", "B", "A"],
+            {
+                "A": `create:${item}`,
+                "B": `create:${type}_casing`
+            }
+        )
+    }
+
     generate_encased(event, "shaft", "andesite")
     generate_encased(event, "cogwheel", "andesite")
     generate_encased(event, "large_cogwheel", "andesite")
@@ -73,7 +85,6 @@ ServerEvents.recipes(event => {
     generate_encased(event, "large_cogwheel", "brass")
 
     // create:water_wheel and create:large_water_wheel
-
     event.remove({ output: "create:water_wheel" })
     event.remove({ output: "create:large_water_wheel" })
 
@@ -101,17 +112,6 @@ ServerEvents.recipes(event => {
         }
     )
 
-    // create:mechanical_piston
-    event.remove({ output: "create:mechanical_piston" })
-    event.recipes.minecraft.crafting_shaped("create:mechanical_piston",
-        ["A", "B", "C"],
-        {
-            "A": "minecraft:piston",
-            "B": "create:piston_extension_pole",
-            "C": "create:andesite_encased_shaft"
-        }
-    )
-
     // rechiseledcreate:mechanical_chisel
     event.remove({ output: "rechiseledcreate:mechanical_chisel" })
     event.recipes.minecraft.crafting_shaped("rechiseledcreate:mechanical_chisel",
@@ -133,4 +133,46 @@ ServerEvents.recipes(event => {
 
     // create:mechanical_arm
     event.replaceInput({ output: "create:mechanical_arm" }, "create:brass_casing", "create:brass_encased_cogwheel")
+
+
+
+    // =========== STUFF YOU CAN'T AUTOMATE (or is hard to) ===========
+
+    // minecraft:netherrack
+    event.recipes.create.haunting(Item.of("minecraft:netherrack").withChance(0.2).withRolls(3), "minecraft:stone")
+
+    // minecraft:gunpowder
+    event.recipes.create.crushing(Item.of("minecraft:gunpowder").withChance(0.1).withRolls(3), "create:cinder_flour")
+
+
+    // minecraft:iron_nugget (increased chance)
+    event.remove({ id: "create:splashing/gravel" })
+    event.recipes.create.splashing(
+        [
+            Item.of("minecraft:iron_nugget").withChance(0.2).withRolls(2),
+            Item.of("minecraft:flint").withChance(0.8),
+        ],
+        "minecraft:gravel"
+    )
+
+    // create_crush_everything:diamond_shard
+    // basically just minecraft:diamond, very low chance though to avoid it being too op
+    event.recipes.create.compacting(Item.of("create_crush_everything:diamond_shard").withChance(0.05), "minecraft:coal_block").superheated()
+
+    // replace all coal with coal or charcoal
+    event.replaceInput({}, "minecraft:coal", "#minecraft:coals")
+
+    
+    // create_crush_everything:netherite_shard
+    // basically just minecraft:netherite_ingot, low chance though
+    event.recipes.create.mixing(
+        [
+            Item.of("minecraft:netherite_upgrade_smithing_template").withChance(0.97),
+            Item.of("create_crush_everything:netherite_shard").withChance(0.1)
+        ],
+        [
+            "minecraft:netherite_upgrade_smithing_template",
+            "minecraft:diamond"
+        ]
+    )
 })
