@@ -1,6 +1,33 @@
 // priority: 10
 // To be honest I have no idea what priority is but oh well
 
+function generateEncased(event, item, type)
+{
+    event.recipes.minecraft.crafting_shaped(`create:${type}_encased_${item}`,
+        ["A", "B", "A"],
+        {
+            "A": `create:${item}`,
+            "B": `create:${type}_casing`
+        }
+    )
+}
+
+function generateCircled(event, result, outsideItem, insideItem)
+{
+    event.recipes.minecraft.crafting_shaped(result,
+        [
+            "AAA",
+            "ABA",
+            "AAA"
+        ],
+        {
+            "A": outsideItem,
+            "B": insideItem
+        }
+    )
+}
+
+
 ServerEvents.recipes(event => {
 
     // create:shaft
@@ -65,52 +92,20 @@ ServerEvents.recipes(event => {
     )
 
     // encased stuff:
-    function generate_encased(event, item, type)
-    {
-        event.recipes.minecraft.crafting_shaped(`create:${type}_encased_${item}`,
-            ["A", "B", "A"],
-            {
-                "A": `create:${item}`,
-                "B": `create:${type}_casing`
-            }
-        )
-    }
 
-    generate_encased(event, "shaft", "andesite")
-    generate_encased(event, "cogwheel", "andesite")
-    generate_encased(event, "large_cogwheel", "andesite")
+    generateEncased(event, "shaft", "andesite")
+    generateEncased(event, "cogwheel", "andesite")
+    generateEncased(event, "large_cogwheel", "andesite")
 
-    generate_encased(event, "shaft", "brass")
-    generate_encased(event, "cogwheel", "brass")
-    generate_encased(event, "large_cogwheel", "brass")
+    generateEncased(event, "shaft", "brass")
+    generateEncased(event, "cogwheel", "brass")
+    generateEncased(event, "large_cogwheel", "brass")
 
     // create:water_wheel and create:large_water_wheel
     event.remove({ output: "create:water_wheel" })
     event.remove({ output: "create:large_water_wheel" })
-
-    event.recipes.minecraft.crafting_shaped("create:water_wheel",
-        [
-            "AAA",
-            "ABA",
-            "AAA"
-        ],
-        {
-            "A": "#minecraft:wooden_slabs",
-            "B": "create:andesite_encased_cogwheel"
-        }
-    )
-
-    event.recipes.minecraft.crafting_shaped("create:large_water_wheel",
-        [
-            "AAA",
-            "ABA",
-            "AAA"
-        ],
-        {
-            "A": "#minecraft:wooden_slabs",
-            "B": "create:andesite_encased_large_cogwheel"
-        }
-    )
+    generateCircled(event, "create:water_wheel", "#minecraft:wooden_slabs", "create:andesite_encased_cogwheel")
+    generateCircled(event, "create:large_water_wheel", "#minecraft:wooden_slabs", "create:andesite_encased_large_cogwheel")
 
     // rechiseledcreate:mechanical_chisel
     event.remove({ output: "rechiseledcreate:mechanical_chisel" })
@@ -134,9 +129,49 @@ ServerEvents.recipes(event => {
     // create:mechanical_arm
     event.replaceInput({ output: "create:mechanical_arm" }, "create:brass_casing", "create:brass_encased_cogwheel")
 
+    
+    // create:cogwheel and create:large_cogwheel
+    event.remove({ output: "create:cogwheel" })
+    event.remove({ output: "create:large_cogwheel" })
+    generateCircled(event, "create:cogwheel", "#minecraft:wooden_buttons", "create:shaft")
+    // ffs I would've loved to use autocrafters to make a larger cogwheel but would've been too annoying in early-game
+    generateCircled(event, "create:large_cogwheel", "#minecraft:wooden_buttons", "create:cogwheel")
 
-
+    // create:crushing_wheel
+    event.remove({ output: "create:crushing_wheel" })
+    event.recipes.create.mechanical_crafting(
+        "create:crushing_wheel",
+        [
+            " AAA ",
+            "AABAA",
+            "ABCBA",
+            "AABAA",
+            " AAA "
+        ],
+        {
+            "A": "create:andesite_alloy",
+            "B": "#balm:wooden_rods", // adds a few more stick types than #forge:rods/wooden (also it includes #forge:rods/wooden as a child)
+            "C": "create:andesite_encased_shaft"
+        }
+    )
+    
     // =========== STUFF YOU CAN'T AUTOMATE (or is hard to) ===========
+
+    // minecraft:deepslate and minecraft:cobbled_deepslate
+    event.recipes.create.compacting(Item.of("minecraft:deepslate").withChance(0.7), "minecraft:stone")
+    event.recipes.create.compacting(Item.of("minecraft:cobbled_deepslate").withChance(0.7), "minecraft:cobblestone")
+
+    // minecraft:skeleton_skull
+    event.recipes.create.compacting("minecraft:skeleton_skull", "6x minecraft:bone_block")
+
+
+        // TODO: this
+    // minecraft:wither_skeleton_skull
+    //event.recipes.create.item_application("minecraft:wither_skeleton_skull", ["minecraft:skeleton_skull", "minecraft:netherite_scrap"])
+
+    event.recipes.create.sequenced_assembly("minecraft:wither_skeleton_skull", "minecraft:skeleton_skull", [
+        event.recipes.create.item_application("minecraft:wither_skeleton_skull", "minecraft:netherite_scrap")
+    ])
 
     // minecraft:netherrack
     event.recipes.create.haunting(Item.of("minecraft:netherrack").withChance(0.2).withRolls(3), "minecraft:stone")
@@ -175,4 +210,21 @@ ServerEvents.recipes(event => {
             "minecraft:diamond"
         ]
     )
+
+    // EVERY ORE TYPE:
+    // This is a very easy mid-game way to get a bunch of different stuff, but very rarely
+    event.recipes.create.splashing([
+        // common (1%)
+        Item.of("minecraft:iron_nugget").withChance(0.01),
+        Item.of("create:zinc_nugget").withChance(0.01),
+        Item.of("create:copper_nugget").withChance(0.01),
+
+        // rare (0.5%)
+        Item.of("minecraft:gold_nugget").withChance(0.005),
+        Item.of("create:brass_nugget").withChance(0.005),
+        
+        // very rare (0.1% and 0.05%)
+        Item.of("create_crush_everything:diamond_shard").withChance(0.001),
+        Item.of("create_crush_everything:netherite_shard").withChance(0.0005)
+    ], "#forge:gravel")
 })
