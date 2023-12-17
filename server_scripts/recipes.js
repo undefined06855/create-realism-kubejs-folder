@@ -17,11 +17,12 @@ ServerEvents.recipes(event => {
         "2x #forge:nuggets/iron"
     ]).superheated()
 
-    // [MOD] pocket_money
-    // might use this eventually but probably won't
-    event.remove({ mod: "pocket_money" })
-
     // create:belt_connector
     event.remove({ output: "create:belt_connector" })
-    event.recipes.minecraft.blasting("create:belt_connector", "myrtrees:latex", 0, 400)
+    //event.recipes.minecraft.blasting("create:belt_connector", "myrtrees:latex", 0, 400)
+})
+
+BlockEvents.broken("better_rubber:full_rubber_log", event => {
+    if (Math.random() < 0.7)
+        event.block.popItem("better_rubber:resin")
 })
