@@ -29,10 +29,9 @@ function generateCircled(event, result, outsideItem, insideItem)
 
 
 ServerEvents.recipes(event => {
-
     // create:shaft
     event.remove({ output: "create:shaft"} )
-    event.recipes.minecraft.stonecutting("2x create:shaft", "create:andesite_alloy")
+    event.recipes.minecraft.stonecutting("create:shaft", "create:andesite_alloy")
 
     // create:andesite_alloy
     event.remove({ output: "create:andesite_alloy" })
@@ -92,7 +91,6 @@ ServerEvents.recipes(event => {
     )
 
     // encased stuff:
-
     generateEncased(event, "shaft", "andesite")
     generateEncased(event, "cogwheel", "andesite")
     generateEncased(event, "large_cogwheel", "andesite")
@@ -154,6 +152,55 @@ ServerEvents.recipes(event => {
             "C": "create:andesite_encased_shaft"
         }
     )
+
+    // create:andesite_tunnel, create:brass_tunnel, create:andesite_funnel and create:brass_funnel
+    event.remove({ output: "create:andesite_tunnel" })
+    event.remove({ output: "create:andesite_funnel" })
+    event.remove({ output: "create:brass_tunnel" })
+    event.remove({ output: "create:brass_funnel" })
+
+    generateCircled(event, "create:andesite_tunnel", "create:andesite_alloy", "minecraft:dried_kelp")
+    event.recipes.minecraft.crafting_shaped(
+        "create:andesite_funnel",
+        [
+            "AAA",
+            "ABA",
+        ],
+        {
+            "A": "create:andesite_alloy",
+            "B": "minecraft:dried_kelp"
+        }
+    )
+
+    event.recipes.minecraft.crafting_shaped(
+        "create:brass_funnel",
+        [
+            "ACA",
+            "ABA",
+        ],
+        {
+            "A": "create:brass_ingot",
+            "B": "minecraft:dried_kelp",
+            "C": "create:electron_tube"
+        }
+    )
+
+    event.recipes.minecraft.crafting_shaped(
+        "create:brass_tunnel",
+        [
+            "ACA",
+            "ABA",
+            "AAA"
+        ],
+        {
+            "A": "create:brass_ingot",
+            "B": "minecraft:dried_kelp",
+            "C": "create:electron_tube"
+        }
+    )
+    
+
+
     
     // =========== STUFF YOU CAN'T AUTOMATE (or is hard to) ===========
 
@@ -196,8 +243,8 @@ ServerEvents.recipes(event => {
     event.recipes.create.compacting(Item.of("create_crush_everything:diamond_shard").withChance(0.05), "minecraft:coal_block").superheated()
 
     // replace all coal with coal or charcoal
-    // except for when milling coal / charcoal to make black dye
-    event.replaceInput({}, "minecraft:coal", "#minecraft:coals")
+    // except for when milling / crushing coal / charcoal to make black dye
+    event.replaceInput({not: { output: "minecraft:black_dye" }}, "minecraft:coal", "#minecraft:coals")
 
     
     // create_crush_everything:netherite_shard
