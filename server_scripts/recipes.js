@@ -164,14 +164,15 @@ ServerEvents.recipes(event => {
     // minecraft:skeleton_skull
     event.recipes.create.compacting("minecraft:skeleton_skull", "6x minecraft:bone_block")
 
-
-        // TODO: this
     // minecraft:wither_skeleton_skull
-    //event.recipes.create.item_application("minecraft:wither_skeleton_skull", ["minecraft:skeleton_skull", "minecraft:netherite_scrap"])
+    event.recipes.create.sequenced_assembly([
+        Item.of("minecraft:wither_skeleton_skull").withChance(0.9),
+    ], "minecraft:skeleton_skull", [
+        event.recipes.create.filling("kubejs:incomplete_wither_skeleton_skull", ["kubejs:incomplete_wither_skeleton_skull", Fluid.of("create_enchantment_industry:ink").withAmount(120)]) // 120mb
+    ]).transitionalItem("kubejs:incomplete_wither_skeleton_skull").loops(6) // set the transitional item and the loops (amount of repetitions)
 
-    event.recipes.create.sequenced_assembly("minecraft:wither_skeleton_skull", "minecraft:skeleton_skull", [
-        event.recipes.create.item_application("minecraft:wither_skeleton_skull", "minecraft:netherite_scrap")
-    ])
+    // minecraft:ender_pearl
+    event.recipes.create.mixing(Item.of("minecraft:ender_pearl").withChance(0.5).withRolls(2), ["minecraft:slime_ball", "minecraft_black_dye"])
 
     // minecraft:netherrack
     event.recipes.create.haunting(Item.of("minecraft:netherrack").withChance(0.2).withRolls(3), "minecraft:stone")
@@ -195,6 +196,7 @@ ServerEvents.recipes(event => {
     event.recipes.create.compacting(Item.of("create_crush_everything:diamond_shard").withChance(0.05), "minecraft:coal_block").superheated()
 
     // replace all coal with coal or charcoal
+    // except for when milling coal / charcoal to make black dye
     event.replaceInput({}, "minecraft:coal", "#minecraft:coals")
 
     
