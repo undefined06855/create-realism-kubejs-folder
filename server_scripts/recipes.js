@@ -1,7 +1,7 @@
 // priority: 10
 // To be honest I have no idea what priority is but oh well
 
-function generateEncased(event, item, type)
+function generateCreateEncasedBlock(event, item, type)
 {
     event.recipes.minecraft.crafting_shaped(`create:${type}_encased_${item}`,
         ["A", "B", "A"],
@@ -91,13 +91,13 @@ ServerEvents.recipes(event => {
     )
 
     // encased stuff:
-    generateEncased(event, "shaft", "andesite")
-    generateEncased(event, "cogwheel", "andesite")
-    generateEncased(event, "large_cogwheel", "andesite")
+    generateCreateEncasedBlock(event, "shaft", "andesite")
+    generateCreateEncasedBlock(event, "cogwheel", "andesite")
+    generateCreateEncasedBlock(event, "large_cogwheel", "andesite")
 
-    generateEncased(event, "shaft", "brass")
-    generateEncased(event, "cogwheel", "brass")
-    generateEncased(event, "large_cogwheel", "brass")
+    generateCreateEncasedBlock(event, "shaft", "brass")
+    generateCreateEncasedBlock(event, "cogwheel", "brass")
+    generateCreateEncasedBlock(event, "large_cogwheel", "brass")
 
     // create:water_wheel and create:large_water_wheel
     event.remove({ output: "create:water_wheel" })
@@ -159,9 +159,9 @@ ServerEvents.recipes(event => {
     event.remove({ output: "create:brass_tunnel" })
     event.remove({ output: "create:brass_funnel" })
 
-    generateCircled(event, "create:andesite_tunnel", "create:andesite_alloy", "minecraft:dried_kelp")
+    generateCircled(event, "4x create:andesite_tunnel", "create:andesite_alloy", "minecraft:dried_kelp")
     event.recipes.minecraft.crafting_shaped(
-        "create:andesite_funnel",
+        "4x create:andesite_funnel",
         [
             "AAA",
             "ABA",
@@ -173,7 +173,7 @@ ServerEvents.recipes(event => {
     )
 
     event.recipes.minecraft.crafting_shaped(
-        "create:brass_funnel",
+        "4x create:brass_funnel",
         [
             "ACA",
             "ABA",
@@ -186,7 +186,7 @@ ServerEvents.recipes(event => {
     )
 
     event.recipes.minecraft.crafting_shaped(
-        "create:brass_tunnel",
+        "4x create:brass_tunnel",
         [
             "ACA",
             "ABA",
