@@ -12,9 +12,11 @@ ServerEvents.recipes(event => {
         "transitionalItem": {
             "item": "create:incomplete_precision_mechanism"
         },
-        "sequence": [{
+        "sequence": [
+            {
                 "type": "create:deploying",
-                "ingredients": [{
+                "ingredients": [
+                    {
                         "item": "create:incomplete_precision_mechanism"
                     },
                     {
@@ -27,7 +29,8 @@ ServerEvents.recipes(event => {
             },
             {
                 "type": "create:deploying",
-                "ingredients": [{
+                "ingredients": [
+                    {
                         "item": "create:incomplete_precision_mechanism"
                     },
                     {
@@ -40,7 +43,8 @@ ServerEvents.recipes(event => {
             },
             {
                 "type": "create:deploying",
-                "ingredients": [{
+                "ingredients": [
+                    {
                         "item": "create:incomplete_precision_mechanism"
                     },
                     {
