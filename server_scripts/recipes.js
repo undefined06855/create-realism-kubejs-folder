@@ -160,6 +160,7 @@ ServerEvents.recipes(event => {
     event.remove({ output: "create:brass_funnel" })
 
     generateCircled(event, "4x create:andesite_tunnel", "create:andesite_alloy", "minecraft:dried_kelp")
+
     event.recipes.minecraft.crafting_shaped(
         "4x create:andesite_funnel",
         [
@@ -199,8 +200,6 @@ ServerEvents.recipes(event => {
         }
     )
     
-
-
     
     // =========== STUFF YOU CAN'T AUTOMATE (or is hard to) ===========
 
