@@ -201,6 +201,7 @@ ServerEvents.recipes(event => {
     )
     
     
+    
     // =========== STUFF YOU CAN'T AUTOMATE (or is hard to) ===========
 
     // minecraft:deepslate and minecraft:cobbled_deepslate
