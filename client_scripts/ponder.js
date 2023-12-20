@@ -32,7 +32,7 @@ Ponder.registry(event => {
     .scene("easter_egg", "Something...", "kubejs:blank_baseplate", (scene, util) => {
         scene.showStructure()
         scene.idle(20)
-        const blobbyFish = scene.world.createEntity("alexsmobs:blobfish", [11 / 2, 1, 11 / 2]);
+        scene.world.createEntity("alexsmobs:blobfish", [11 / 2, 1, 11 / 2]);
     })
 })
 
