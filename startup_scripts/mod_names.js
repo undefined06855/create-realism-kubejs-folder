@@ -1,6 +1,6 @@
 Platform.mods.kubejs.name = "Create"
 
-// 0.5% chance mod names get funnyified
+// 5% chance mod names get funnyified
 if (Math.random() < 0.05)
 {
     let newNames = {
@@ -107,8 +107,8 @@ if (Math.random() < 0.05)
         entityculling: "more fps i guess",
         betterchunkloading: "load my chunks (but better)",
         xaeroplus: "more xaero stuff",
-        xaerosworldmap: "map my world",
-        xaerosminimap: "map my world (but smaller)",
+        xaeroworldmap: "map my world",
+        xaerominimap: "map my world (but smaller)",
         kubejs_create: "create all my javascript kubes",
         appleskin: "peel my apples",
         lootr: "YEEAAAHH LOOTR",
@@ -123,6 +123,7 @@ if (Math.random() < 0.05)
     for (let [k, v] of Object.entries(newNames))
     {
         console.log(k, v)
-        Platform.mods[k].name = v
+        try {Platform.mods[k].name = v}
+        catch(_) { console.log(`Couldn't set name of ${k} to ${v}`) }
     }
 }
